@@ -1,0 +1,35 @@
+<center>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <form id="form" action="save.php" method="post">
+        <p>天气: <span id="weather"></span></p>
+        <p>时间: <span id="time"></span></p>
+        <p><label for="zhichu">支出：</label><input type="text" name="txt" id="txt" /></p>
+        <p><label for="tomato">番茄：</label><input type="text" name="tomato" id="tomato" /></p>
+        <p><label for="sport">锻炼：</label><input type="text" name="sport" id="sport" /></p>
+        <p><label for="book">阅读： </label><select name="bookList" id="bookList"><input type="text" name="book" id="book" /></p>
+        <p><input type="submit" name="send" id="send" value="提交" /></p>
+    </form>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    <script>
+        var updateWeather=function() {
+            $.getJSON("http://api.map.baidu.com/telematics/v3/weather?location=%E5%A4%A7%E8%BF%9E&output=json&ak=GOcC6xATGeCEsGGc1S5dAOVRtkXrTwN4&callback=?",function(json){
+            document.getElementById("weather").innerHTML=json["results"][0]["weather_data"][0]["temperature"]+" "+json["results"][0]["weather_data"][0]["weather"]+ " " +json["results"][0]["weather_data"][0]["wind"];
+            document.getElementById("time").innerHTML=json.date;
+        });
+        }
+        var updateBooklist=function() {
+            $.getJSON("https://api.douban.com/v2/book/user/34262520/collections?status=reading&callback=?",function(json){
+                bookName = json.collections[0].book.title;
+                bookNum = json.total;
+                for (var i=0;i<=bookNum;i++) {
+                    var bookList = document.getElementById("bookList");
+                    bookList.options.add(new Option(json.collections[i].book.title, "bookName"))
+                }
+            });
+        }
+        window.onload=function() {
+            updateWeather();
+            updateBooklist();
+        }
+    </script>
+</center>
