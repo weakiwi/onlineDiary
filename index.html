@@ -23,24 +23,16 @@
                 }
             });
         }
-        function findMyDom(str,dom){
-            a=$("#result h2");
-            for(var i =0;i<$("#result h2").length;i++){
-                if(a[0].innerText == str){
-                    $(dom).val(a.next()[0].innerText);
-                    break;
-                }
-                else{
-                    a=a.next();
-                }
-            }
-            return 1;
-        }
         function findAll(){
-            findMyDom("锻炼","#sport");
-            findMyDom("支出","#zhichu");
-            findMyDom("番茄","#tomato");
-            return 1;
+            a=$("#-1");
+            b=$("#-2");
+            if(a.prev().text() != "锻炼"){
+                $("#sport").val(a.prev().text());
+            }
+            if(a.next().text() != "支出"){
+                $("#tomato").val(a.next().text());
+            }
+            $("#zhichu").val(b.next().text());          
         }        
         window.onload=function() {
             updateWeather();
@@ -78,9 +70,9 @@
 </head>
 <body>
     <form id="form" action="save.php" method="post">
-        <label for="zhichu"></label><input type="hidden" name="txt" id="txt" />
-        <label for="tomato"></label><input type="hidden" name="tomato" id="tomato" />
-        <label for="sport"></label><input type="hidden" name="sport" id="sport" />
+        <label for="zhichu"></label><input type="hidden" name="zhichu" id="zhichu" value=""/>
+        <label for="tomato"></label><input type="hidden" name="tomato" id="tomato" value=""/>
+        <label for="sport"></label><input type="hidden" name="sport" id="sport" value=""/>
         <input type="submit" name="send" id="send" value="提交" onclick="findAll()" /></p>
         <label for="learn"></label><textarea name="learn" cols="20" rows="5" id="learn" onkeyup="compile()"></textarea>       
         <div id="result"></div>
