@@ -4,8 +4,13 @@
     <script src="https://cdn.bootcss.com/showdown/1.3.0/showdown.js"></script>
     <script>
         var updateWeather=function() {
+            $.ajaxSettings.async = false;
             $.getJSON("http://api.map.baidu.com/telematics/v3/weather?location=%E5%A4%A7%E8%BF%9E&output=json&ak=GOcC6xATGeCEsGGc1S5dAOVRtkXrTwN4&callback=?",function(json){           
-            document.getElementById("learn").value='##'+json.date+'\n'+'##'+json["results"][0]["weather_data"][0]["temperature"]+" "+json["results"][0]["weather_data"][0]["weather"]+ " " +json["results"][0]["weather_data"][0]["wind"]+'\n';
+            document.getElementById("learn").value='##'+json.date+'\n'+
+                                                   '##'+json["results"][0]["weather_data"][0]["temperature"]+" "+json["results"][0]["weather_data"][0]["weather"]+ " " +json["results"][0]["weather_data"][0]["wind"]+'\n'+
+                                                   '##锻炼\n'+
+                                                   '##番茄\n'+
+                                                   '##支出\n';
         });
         }
         var updateBooklist=function() {
@@ -18,6 +23,25 @@
                 }
             });
         }
+        function findMyDom(str,dom){
+            a=$("#result h2");
+            for(var i =0;i<$("#result h2").length;i++){
+                if(a[0].innerText == str){
+                    $(dom).val(a.next()[0].innerText);
+                    break;
+                }
+                else{
+                    a=a.next();
+                }
+            }
+            return 1;
+        }
+        function findAll(){
+            findMyDom("锻炼","#sport");
+            findMyDom("支出","#zhichu");
+            findMyDom("番茄","#tomato");
+            return 1;
+        }        
         window.onload=function() {
             updateWeather();
         }
@@ -54,10 +78,10 @@
 </head>
 <body>
     <form id="form" action="save.php" method="post">
-        <label for="zhichu">支出：</label><input type="text" name="txt" id="txt" />
-        <label for="tomato">番茄：</label><input type="text" name="tomato" id="tomato" />
-        <label for="sport">锻炼：</label><input type="text" name="sport" id="sport" />
-        <input type="submit" name="send" id="send" value="提交" /></p>
+        <label for="zhichu"></label><input type="hidden" name="txt" id="txt" />
+        <label for="tomato"></label><input type="hidden" name="tomato" id="tomato" />
+        <label for="sport"></label><input type="hidden" name="sport" id="sport" />
+        <input type="submit" name="send" id="send" value="提交" onclick="findAll()" /></p>
         <label for="learn"></label><textarea name="learn" cols="20" rows="5" id="learn" onkeyup="compile()"></textarea>       
         <div id="result"></div>
         <script type="text/javascript">
