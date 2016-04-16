@@ -1,3 +1,5 @@
+<?php
+?>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
@@ -6,7 +8,7 @@
         var updateWeather=function() {
             $.ajaxSettings.async = false;
             $.getJSON("http://api.map.baidu.com/telematics/v3/weather?location=%E5%A4%A7%E8%BF%9E&output=json&ak=GOcC6xATGeCEsGGc1S5dAOVRtkXrTwN4&callback=?",function(json){           
-            document.getElementById("learn").value='##'+json.date+'\n'+
+            document.getElementById("content").value='##'+json.date+'\n'+
                                                    '##'+json["results"][0]["weather_data"][0]["temperature"]+" "+json["results"][0]["weather_data"][0]["weather"]+ " " +json["results"][0]["weather_data"][0]["wind"]+'\n'+
                                                    '##锻炼\n'+
                                                    '##番茄\n'+
@@ -32,7 +34,8 @@
             if(a.next().text() != "支出"){
                 $("#tomato").val(a.next().text());
             }
-            $("#zhichu").val(b.next().text());          
+            $("#zhichu").val(b.next().text()); 
+            window.location.reload();
         }        
         window.onload=function() {
             updateWeather();
@@ -69,16 +72,21 @@
     </style>
 </head>
 <body>
-    <form id="form" action="save.php" method="post">
+    <form id="form" action="save.php" method="post" target="hidden_frame">
         <label for="zhichu"></label><input type="hidden" name="zhichu" id="zhichu" value=""/>
         <label for="tomato"></label><input type="hidden" name="tomato" id="tomato" value=""/>
         <label for="sport"></label><input type="hidden" name="sport" id="sport" value=""/>
         <input type="submit" name="send" id="send" value="提交" onclick="findAll()" /></p>
-        <label for="learn"></label><textarea name="learn" cols="20" rows="5" id="learn" onkeyup="compile()"></textarea>       
+        <label for="content"></label><textarea name="content" cols="20" rows="5" id="content" onkeyup="compile()"></textarea>       
         <div id="result"></div>
+        <iframe name='hidden_frame' id='hidden_frame'  style="display:none;">
+            <script language=JavaScript>   
+               parent.location.reload();   
+            </script>          
+        </iframe>
         <script type="text/javascript">
             function compile(){
-              var text = document.getElementById("learn").value;
+              var text = document.getElementById("content").value;
               var converter = new showdown.Converter();
               var html = converter.makeHtml(text);
               document.getElementById("result").innerHTML = html;
