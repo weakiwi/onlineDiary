@@ -9,10 +9,10 @@
     mysql_select_db("myDiary");    
     $createDiary = 'INSERT INTO diary (tomato,zhichu,sport,content) VALUES ("%s", "%u","%s","%s");';//增加用户
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $toamto = $_POST["tomato"];
-        $zhichu = $_POST["zhichu"];
-        $sport = $_POST["sport"];
-        $content = $_POST["content"];
+        $toamto = htmlspecialchars($_POST["tomato"]);
+        $zhichu = htmlspecialchars($_POST["zhichu"]);
+        $sport = htmlspecialchars($_POST["sport"]);
+        $content = htmlspecialchars($_POST["content"]);
         $createDiary = sprintf($createDiary, $toamto, $zhichu, $sport, $content);
         mysql_query($createDiary);
     }     
