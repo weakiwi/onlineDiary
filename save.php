@@ -13,6 +13,6 @@
         $sport = htmlspecialchars($_POST["sport"]);
         $content = htmlspecialchars($_POST["content"]);
         $createDiary->bind_param($toamto, $zhichu, $sport, $content);
-        $conn->query($createDiary);
+        $mysqli->query($createDiary);
     }     
 ?>
